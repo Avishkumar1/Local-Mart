@@ -151,15 +151,16 @@ const Navbar = () => {
                         ) : (
                             <Link
                                 to="/login"
-                                className="hidden md:inline-flex items-center justify-center px-5 py-2 border border-transparent text-sm font-medium rounded-full text-white bg-leaf-600 hover:bg-leaf-700 transition-all shadow-md hover:shadow-lg"
+                                className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-full text-white bg-leaf-600 hover:bg-leaf-700 transition-all shadow-md hover:shadow-lg"
                             >
-                                Sign In
+                                <span className="md:hidden"><UserIcon className="h-5 w-5" /></span>
+                                <span className="hidden md:inline">Sign In</span>
                             </Link>
                         )}
                     </div>
                 </div>
             </div>
-            
+
             {/* Mobile Search Bar */}
             {showMobileSearch && (
                 <div className="md:hidden px-4 pb-4">
