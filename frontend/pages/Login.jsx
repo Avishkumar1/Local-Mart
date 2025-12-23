@@ -105,28 +105,32 @@ const Login = () => {
                         </button>
                     </form>
 
-                    <div className="relative my-6">
-                        <div className="absolute inset-0 flex items-center">
-                            <div className="w-full border-t border-gray-200"></div>
-                        </div>
-                        <div className="relative flex justify-center text-sm">
-                            <span className="px-2 bg-white text-gray-500">Or continue with</span>
-                        </div>
-                    </div>
+                    {role === Role.CUSTOMER && (
+                        <>
+                            <div className="relative my-6">
+                                <div className="absolute inset-0 flex items-center">
+                                    <div className="w-full border-t border-gray-200"></div>
+                                </div>
+                                <div className="relative flex justify-center text-sm">
+                                    <span className="px-2 bg-white text-gray-500">Or continue with</span>
+                                </div>
+                            </div>
 
-                    <button
-                        onClick={signInWithGoogle}
-                        type="button"
-                        className="w-full bg-white border border-gray-300 text-gray-700 font-medium py-2.5 rounded-xl hover:bg-gray-50 transition-all flex items-center justify-center"
-                    >
-                        <svg className="h-5 w-5 mr-2" viewBox="0 0 24 24">
-                            <path
-                                fill="currentColor"
-                                d="M21.35,11.1H12.18V13.83H18.69C18.36,17.64 15.19,19.27 12.19,19.27C8.36,19.27 5,16.25 5,12.61C5,8.76 8.32,5.71 12.15,5.71C14.06,5.71 15.62,6.49 16.67,7.56L18.42,5.82C16.8,4.34 14.65,3.32 12.15,3.32C6.9,3.32 2.67,7.49 2.67,12.63C2.67,17.77 6.9,21.94 12.15,21.94C17.43,21.94 21.05,18.15 21.05,12.87C21.05,12.26 21.01,11.69 20.89,11.1L21.35,11.1L21.35,11.1Z"
-                            />
-                        </svg>
-                        Sign in with Google
-                    </button>
+                            <button
+                                onClick={signInWithGoogle}
+                                type="button"
+                                className="w-full bg-white border border-gray-300 text-gray-700 font-medium py-2.5 rounded-xl hover:bg-gray-50 transition-all flex items-center justify-center"
+                            >
+                                <svg className="h-5 w-5 mr-2" viewBox="0 0 24 24">
+                                    <path
+                                        fill="currentColor"
+                                        d="M21.35,11.1H12.18V13.83H18.69C18.36,17.64 15.19,19.27 12.19,19.27C8.36,19.27 5,16.25 5,12.61C5,8.76 8.32,5.71 12.15,5.71C14.06,5.71 15.62,6.49 16.67,7.56L18.42,5.82C16.8,4.34 14.65,3.32 12.15,3.32C6.9,3.32 2.67,7.49 2.67,12.63C2.67,17.77 6.9,21.94 12.15,21.94C17.43,21.94 21.05,18.15 21.05,12.87C21.05,12.26 21.01,11.69 20.89,11.1L21.35,11.1L21.35,11.1Z"
+                                    />
+                                </svg>
+                                Sign in with Google
+                            </button>
+                        </>
+                    )}
 
                     <p className="mt-6 text-center text-sm text-gray-600">
                         Don't have an account?{' '}
