@@ -36,7 +36,9 @@ const registerUser = async (req, res) => {
             const token = generateToken(user.userId, 'Customer');
             res.cookie('token', token, {
                 httpOnly: true,
-                maxAge: 30 * 24 * 60 * 60 * 1000
+                maxAge: 30 * 24 * 60 * 60 * 1000,
+                sameSite: 'none',
+                secure: true
             });
 
             res.status(201).json({
@@ -68,7 +70,9 @@ const loginUser = async (req, res) => {
             const token = generateToken(user.userId, user.role); // Use actual role
             res.cookie('token', token, {
                 httpOnly: true,
-                maxAge: 30 * 24 * 60 * 60 * 1000
+                maxAge: 30 * 24 * 60 * 60 * 1000,
+                sameSite: 'none',
+                secure: true
             });
 
             res.json({
@@ -118,7 +122,9 @@ const registerShopkeeper = async (req, res) => {
             const token = generateToken(user.userId, 'Shopkeeper');
             res.cookie('token', token, {
                 httpOnly: true,
-                maxAge: 30 * 24 * 60 * 60 * 1000
+                maxAge: 30 * 24 * 60 * 60 * 1000,
+                sameSite: 'none',
+                secure: true
             });
 
             res.status(201).json({
@@ -155,7 +161,9 @@ const loginShopkeeper = async (req, res) => {
             const token = generateToken(user.userId, 'Shopkeeper');
             res.cookie('token', token, {
                 httpOnly: true,
-                maxAge: 30 * 24 * 60 * 60 * 1000
+                maxAge: 30 * 24 * 60 * 60 * 1000,
+                sameSite: 'none',
+                secure: true
             });
 
             res.json({
@@ -204,7 +212,9 @@ const registerDeliveryPartner = async (req, res) => {
             const token = generateToken(user.userId, 'DeliveryPartner');
             res.cookie('token', token, {
                 httpOnly: true,
-                maxAge: 30 * 24 * 60 * 60 * 1000
+                maxAge: 30 * 24 * 60 * 60 * 1000,
+                sameSite: 'none',
+                secure: true
             });
 
             res.status(201).json({
@@ -239,7 +249,9 @@ const loginDeliveryPartner = async (req, res) => {
             const token = generateToken(user.userId, 'DeliveryPartner');
             res.cookie('token', token, {
                 httpOnly: true,
-                maxAge: 30 * 24 * 60 * 60 * 1000
+                maxAge: 30 * 24 * 60 * 60 * 1000,
+                sameSite: 'none',
+                secure: true
             });
 
             res.json({
@@ -266,7 +278,9 @@ const loginDeliveryPartner = async (req, res) => {
 const logout = (req, res) => {
     res.cookie('token', '', {
         httpOnly: true,
-        expires: new Date(0)
+        expires: new Date(0),
+        sameSite: 'none',
+        secure: true
     });
     res.status(200).json({ message: 'Logged out successfully' });
 };
@@ -308,8 +322,8 @@ const oauthCallback = (req, res) => {
         res.cookie('token', token, {
             httpOnly: true,
             maxAge: 30 * 24 * 60 * 60 * 1000,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax'
+            sameSite: 'none',
+            secure: true
         });
 
         const redirectUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
