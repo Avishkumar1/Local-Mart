@@ -4,8 +4,12 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 const cookieExtractor = function (req) {
     let token = null;
-    if (req && req.cookies) {
-        token = req.cookies['token'];
+    if (req && req.cookies) token = req.cookies['token'];
+    if (!token && req && req.headers.authorization) {
+        const parts = req.headers.authorization.split(' ');
+        if (parts.length === 2 && parts[0] === 'Bearer') {
+            token = parts[1];
+        }
     }
     return token;
 };
@@ -18,7 +22,7 @@ const options = {
 module.exports = (passport) => {
     passport.use(new JwtStrategy(options, async (jwt_payload, done) => {
         try {
-            
+
             const user = await User.findOne({ userId: jwt_payload.id });
             if (user) {
                 return done(null, user);
@@ -37,7 +41,7 @@ module.exports = (passport) => {
         try {
             const email = profile.emails && profile.emails[0] && profile.emails[0].value;
 
-           
+
             let user = null;
             if (profile.id) {
                 user = await User.findOne({ $or: [{ googleId: profile.id }, { Email: email }] });
@@ -46,7 +50,7 @@ module.exports = (passport) => {
             }
 
             if (user) {
-            
+
                 if (!user.googleId && profile.id) {
                     user.googleId = profile.id;
                     await user.save();
@@ -54,7 +58,7 @@ module.exports = (passport) => {
                 return done(null, user);
             }
 
-            
+
             const newUser = await User.create({
                 Name: profile.displayName || email,
                 Email: email,
@@ -69,5 +73,5 @@ module.exports = (passport) => {
         }
     }));
 };
-        
-   
+
+

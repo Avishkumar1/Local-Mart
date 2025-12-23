@@ -8,13 +8,22 @@ export const AuthProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
+        // Check for token in URL (Google Login Redirect)
+        const params = new URLSearchParams(window.location.search);
+        const urlToken = params.get('token');
+        if (urlToken) {
+            localStorage.setItem('token', urlToken);
+            window.history.replaceState({}, document.title, window.location.pathname); // Clean URL
+        }
+
         // Check session on load
         const checkSession = async () => {
             try {
                 const user = await api.auth.getProfile();
                 setUser(user);
             } catch (e) {
-                // Not authenticated
+                // Not authenticated or token invalid
+                localStorage.removeItem('token');
                 setUser(null);
             } finally {
                 setIsLoading(false);

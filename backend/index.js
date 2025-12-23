@@ -11,7 +11,7 @@ const passport = require('passport');
 
 
 app.use(cors({
-    origin: ['http://localhost:3001', 'http://localhost:3002', 'http://localhost:3003', 'https://local-mart-lyart.vercel.app'],
+    origin: ['http://localhost:3001', 'http://localhost:3002', 'http://localhost:3003', 'http://localhost:5173', 'https://local-mart-lyart.vercel.app'],
     credentials: true
 }));
 app.use(express.json());

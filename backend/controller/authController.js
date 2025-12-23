@@ -326,7 +326,9 @@ const oauthCallback = (req, res) => {
             secure: true
         });
 
-        const redirectUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+        const redirectUrl = process.env.FRONTEND_URL
+            ? `${process.env.FRONTEND_URL}?token=${token}`
+            : `http://localhost:3000?token=${token}`;
         return res.redirect(redirectUrl);
     } catch (error) {
         console.error(error);
