@@ -53,7 +53,7 @@ export const api = {
             return { user: mapUser(response.data.user) };
         },
         google: () => {
-            window.location.href = 'http://localhost:9002/api/auth/google';
+            window.location.href = 'https://local-mart-nrj2.onrender.com/api/auth/google';
         },
         getProfile: async () => {
             try {
@@ -99,7 +99,7 @@ export const api = {
             return response.data.map(mapShop);
         },
         getNearby: async (latitude, longitude, city) => {
-            const url = city 
+            const url = city
                 ? `/items/nearby?latitude=${latitude}&longitude=${longitude}&city=${encodeURIComponent(city)}`
                 : `/items/nearby?latitude=${latitude}&longitude=${longitude}`;
             const response = await axiosInstance.get(url);
