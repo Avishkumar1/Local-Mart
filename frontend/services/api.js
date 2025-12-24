@@ -49,6 +49,7 @@ export const api = {
                 Email: data.email,
                 Password: data.password,
                 Address: data.address,
+                City: data.city,
                 DOB: data.dob,
                 Gender: data.gender,
             };
@@ -172,7 +173,8 @@ function mapUser(backendUser) {
         email: backendUser.Email,
         role: role,
         avatar: backendUser.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(backendUser.Name)}`,
-        location: backendUser.location
+        location: backendUser.location,
+        city: backendUser.City
     };
 }
 
