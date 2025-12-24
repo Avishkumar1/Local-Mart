@@ -26,7 +26,11 @@ const registerUser = async (req, res) => {
             Password: hashedPassword,
             Phone: Phone || undefined, // Handle empty string
             Address,
-            City: City || undefined, // City field for location-based filtering
+            City: City || undefined,
+            location: (req.body.latitude && req.body.longitude) ? {
+                type: 'Point',
+                coordinates: [parseFloat(req.body.longitude), parseFloat(req.body.latitude)]
+            } : undefined,
             DOB,
             Gender,
             role: 'Customer'
@@ -111,9 +115,13 @@ const registerShopkeeper = async (req, res) => {
             Name,
             Email,
             Password: hashedPassword,
-            Phone: Phone || undefined, // Handle empty string
+            Phone: Phone || undefined,
             Address,
-            City: City || undefined, // City field for location-based filtering
+            City: City || undefined,
+            location: (req.body.latitude && req.body.longitude) ? {
+                type: 'Point',
+                coordinates: [parseFloat(req.body.longitude), parseFloat(req.body.latitude)]
+            } : undefined,
             role: 'Shopkeeper',
             IsAvailable: true
         });
@@ -201,9 +209,13 @@ const registerDeliveryPartner = async (req, res) => {
             Name,
             Email,
             Password: hashedPassword,
-            Phone: Phone || undefined, // Handle empty string
+            Phone: Phone || undefined,
             Address,
-            City: City || undefined, // City field for location-based filtering
+            City: City || undefined,
+            location: (req.body.latitude && req.body.longitude) ? {
+                type: 'Point',
+                coordinates: [parseFloat(req.body.longitude), parseFloat(req.body.latitude)]
+            } : undefined,
             role: 'DeliveryPartner',
             IsAvailable: true
         });

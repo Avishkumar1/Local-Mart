@@ -50,6 +50,8 @@ export const api = {
                 Password: data.password,
                 Address: data.address,
                 City: data.city,
+                latitude: data.latitude,
+                longitude: data.longitude,
                 DOB: data.dob,
                 Gender: data.gender,
             };

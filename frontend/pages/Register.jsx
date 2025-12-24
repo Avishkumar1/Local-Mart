@@ -11,6 +11,8 @@ const Register = () => {
         phone: '',
         address: '',
         city: '',
+        latitude: null,
+        longitude: null,
         gender: 'Prefer not to say',
         role: 'Customer'
     });
@@ -133,6 +135,38 @@ const Register = () => {
                                     onChange={handleChange}
                                     value={formData.city}
                                 />
+                            </div>
+
+                            <div className="col-span-1">
+                                <label className="text-sm font-medium text-gray-700">Location</label>
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        if (navigator.geolocation) {
+                                            navigator.geolocation.getCurrentPosition(
+                                                (position) => {
+                                                    setFormData(prev => ({
+                                                        ...prev,
+                                                        latitude: position.coords.latitude,
+                                                        longitude: position.coords.longitude
+                                                    }));
+                                                    alert("Location detected successfully! ✅");
+                                                },
+                                                (error) => {
+                                                    console.error(error);
+                                                    alert("Unable to retrieve location. Please allow location access.");
+                                                }
+                                            );
+                                        } else {
+                                            alert("Geolocation is not supported by this browser.");
+                                        }
+                                    }}
+                                    className={`mt-1 w-full flex items-center justify-center px-4 py-2 border rounded-lg text-sm font-medium transition-colors ${formData.latitude ? 'bg-green-50 text-green-700 border-green-200' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                                        }`}
+                                >
+                                    {formData.latitude ? 'Location Set ✅' : '📍 Detect My Location'}
+                                </button>
+                                {formData.latitude && <p className="text-xs text-green-600 mt-1">Coordinates captured.</p>}
                             </div>
                         </div>
                     </div>
