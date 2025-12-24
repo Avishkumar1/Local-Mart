@@ -13,15 +13,18 @@ const updateLocation = async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
+        if (req.body.city) {
+            user.City = req.body.city;
+        }
+
         user.location = {
             type: 'Point',
             coordinates: [parseFloat(longitude), parseFloat(latitude)]
         };
 
-        await user.save(); // This might error if other required fields are missing/check validation
-        // But since we are updating existing user, it should be fine.
+        await user.save();
 
-        res.json({ message: 'Location updated', location: user.location });
+        res.json({ message: 'Location updated', location: user.location, city: user.City });
     } catch (error) {
         console.error("Update location error:", error);
         res.status(500).json({ message: 'Server error updating location' });

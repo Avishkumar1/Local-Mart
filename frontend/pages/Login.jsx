@@ -22,7 +22,9 @@ const Login = () => {
             else if (role === 'DeliveryPartner') navigate('/delivery/dashboard');
             else navigate('/');
         } catch (err) {
-            setError('Failed to login. Please try again.');
+            console.error(err);
+            const msg = err.response?.data?.message || err.message || 'Failed to login. Please try again.';
+            setError(msg);
         }
     };
 
