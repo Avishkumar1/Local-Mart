@@ -101,12 +101,12 @@ const getAllShops = async (req, res) => {
     try {
         const { city } = req.query;
         let query = { role: 'Shopkeeper' };
-        
+
         // Filter by city if provided
         if (city) {
             query.City = { $regex: city, $options: 'i' }; // Case-insensitive search
         }
-        
+
         const shops = await User.find(query).select('-Password');
         res.json(shops);
     } catch (error) {
@@ -127,33 +127,44 @@ const getShopIdItems = async (req, res) => {
 
 const getNearbyShops = async (req, res) => {
     try {
-        const { latitude, longitude, maxDistance = 10000, city } = req.query; // maxDistance in meters, default 10km
+        const { latitude, longitude, maxDistance = 50000, city } = req.query; // maxDistance default 50km
 
-        if (!latitude || !longitude) {
-            return res.status(400).json({ message: 'Latitude and Longitude are required' });
-        }
+        let geoShops = [];
+        let cityShops = [];
 
-        let query = {
-            role: 'Shopkeeper',
-            location: {
-                $near: {
-                    $geometry: {
-                        type: 'Point',
-                        coordinates: [parseFloat(longitude), parseFloat(latitude)]
-                    },
-                    $maxDistance: parseInt(maxDistance)
+        // 1. Geospatial Search (if lat/long provided)
+        if (latitude && longitude) {
+            geoShops = await User.find({
+                role: 'Shopkeeper',
+                location: {
+                    $near: {
+                        $geometry: {
+                            type: 'Point',
+                            coordinates: [parseFloat(longitude), parseFloat(latitude)]
+                        },
+                        $maxDistance: parseInt(maxDistance)
+                    }
                 }
-            }
-        };
-        
-        // Filter by city if provided
-        if (city) {
-            query.City = { $regex: city, $options: 'i' }; // Case-insensitive search
+            }).select('-Password -googleId');
         }
 
-        const shops = await User.find(query).select('-Password -googleId');
+        // 2. City-based Search (if city provided) - for shops without precise location or legacy data
+        if (city) {
+            cityShops = await User.find({
+                role: 'Shopkeeper',
+                City: { $regex: city, $options: 'i' }
+            }).select('-Password -googleId');
+        }
 
-        res.json(shops);
+        // 3. Merge and Deduplicate
+        const allShopsMap = new Map();
+
+        geoShops.forEach(shop => allShopsMap.set(shop._id.toString(), shop));
+        cityShops.forEach(shop => allShopsMap.set(shop._id.toString(), shop));
+
+        const uniqueShops = Array.from(allShopsMap.values());
+
+        res.json(uniqueShops);
     } catch (error) {
         console.error("Nearby shops error:", error);
         res.status(500).json({ message: 'Server error fetching nearby shops' });
